@@ -16,5 +16,8 @@ Install:
     -bulma
     
 Activate venv: \project: env/scripts/activate.ps1
-Run server: \project\shop_project: python manage.py runserver
+
+Run server:
+\project\shop_project: python manage.py runserver
+
 \project/shop_vue: npm run serve
