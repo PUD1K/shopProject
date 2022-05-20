@@ -2,6 +2,7 @@
 Simple E-commerce shop project. 
 
 What is needed to start:
+
 Install:
 
   Python libraries:
