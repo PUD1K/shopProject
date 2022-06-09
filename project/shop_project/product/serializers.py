@@ -1,15 +1,43 @@
-from cgitb import lookup
 from rest_framework import serializers
 from django_filters import FilterSet
-from django_filters import NumberFilter, AllValuesFilter,  MultipleChoiceFilter, AllValuesMultipleFilter
+from django_filters import NumberFilter, AllValuesMultipleFilter
 
-from .models import Category, Manufacturer, Product, Subcategory
+from .models import Category, Manufacturer, Product, Subcategory, Comments
 
-class ProductSerializer(serializers.ModelSerializer):
+class CommentsSerializer(serializers.ModelSerializer):
+    user = serializers.StringRelatedField()
+
+    class Meta:
+        model = Comments
+        fields=(
+            'id',
+            'user',
+            'heading',
+            'score',
+            'text',
+
+            'created_at'
+
+        )
+    # создаем объект комментария
+    def create(self, validated_data):
+        product_id = validated_data.pop('product_id')
+        comment = Comments.objects.create(**validated_data)
+        self.add_comment_to_product(product_id, comment)
+        return comment
+
+    # привязываем комментарий к товару
+    def add_comment_to_product(self, product_id, comment):
+        # используем метод add для ManyToMany полей
+        data = Product.objects.get(pk=product_id).comments.add(comment)
+
+
+class ProductDetailSerializer(serializers.ModelSerializer):
     category = serializers.SlugRelatedField(slug_field="name", read_only=True)
     subcategory = serializers.SlugRelatedField(slug_field="name", read_only=True)
     manufacturer = serializers.SlugRelatedField(slug_field="name", read_only=True)
-
+    comments = CommentsSerializer(many=True, read_only=True)
+    
     class Meta:
         model = Product
         fields=(
@@ -28,7 +56,36 @@ class ProductSerializer(serializers.ModelSerializer):
             'processor',
             'videocart',
             'hdd',
-            'ram'
+            'ram',
+
+            'sales',
+            'comments'
+        )  
+
+class ProductSerializer(serializers.ModelSerializer):
+    category = serializers.SlugRelatedField(slug_field="name", read_only=True)
+    subcategory = serializers.StringRelatedField()
+    manufacturer = serializers.StringRelatedField()
+    
+    class Meta:
+        model = Product
+        fields=(
+            'id',
+            'name',
+            'category', 
+            'subcategory',
+            'manufacturer',
+            'get_absolute_url',
+            'description',
+            'price',
+            'get_image',
+            'get_thumbnail',
+
+            'type',
+            'processor',
+            'videocart',
+            'hdd',
+            'ram',
         )  
 
 class ProductFilter(FilterSet):
@@ -53,6 +110,8 @@ class ProductFilter(FilterSet):
             'manufacturer_name',
         )
 
+
+
 class CategorySerializer(serializers.ModelSerializer):
     products = ProductSerializer(many=True)
 
@@ -73,6 +132,7 @@ class AllCategorySerializer(serializers.ModelSerializer):
             'name',
             'get_absolute_url',
         )
+        
 class SubcategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Subcategory
@@ -87,4 +147,12 @@ class BrandSerializer(serializers.ModelSerializer):
         fields=(
             'name',
             'slug'
+        )
+
+class ProductSalesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Product
+        fields=(
+            'name',
+            'sales'
         )

@@ -37,6 +37,12 @@
                             <a class="dropdown-item" @click="select = 'date_added', select_param ='Сначала старые', hidden = !hidden">
                                 Сначала старые
                             </a>
+                            <a class="dropdown-item" @click="select = '-sales', hidden = !hidden">
+                                Сначала самые продаваемые
+                            </a>
+                            <a class="dropdown-item" @click="select = 'sales', hidden = !hidden">
+                                Сначала самые непродаваемые
+                            </a>
                             <hr class="dropdown-divider">
                             <a class="dropdown-item" @click="select = '', select_param ='Сортировка', hidden = !hidden">
                                 Нет
@@ -87,11 +93,11 @@
             </div>
             
             <!--  конец фильтров-->
-            <ProductItem 
-                v-for="product in category.products"
-                v-bind:key="product.id"
-                v-bind:product="product"
-            />
+                    <ProductItem 
+                        v-for="product in category.products"
+                        v-bind:key="product.id"
+                        v-bind:product="product"
+                    />
          </div>
       </div>
   </div>

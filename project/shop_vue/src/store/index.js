@@ -9,7 +9,6 @@ export default createStore({
     isAuthentificated: false
   },
   getters: {
-
   },
   mutations: {
     //если в localStorage есть что-то в корзине

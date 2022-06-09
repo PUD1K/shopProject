@@ -3,8 +3,8 @@
         <div class="box">
             <figure class="image mb-4">
                 <img style="object-fit: scale-down;
-                     width:300px;
-                     height: 300px;" 
+                     width:200px;
+                     height: 200px;" 
                 :src="product.get_image">
             </figure>
 
@@ -23,7 +23,7 @@ export default {
     name: 'ProductItem',
     props:{
         product: Object
-    }
+    },
 }
 </script>
 

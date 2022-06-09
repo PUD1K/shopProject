@@ -3,6 +3,7 @@ from rest_framework import serializers
 from .models import Order, OrderItem
 
 from product.serializers import ProductSerializer
+from product.models import Product
 
 # для своих заказов
 class MyOrderItemSerializer(serializers.ModelSerializer):
@@ -70,5 +71,12 @@ class OrderSerializer(serializers.ModelSerializer):
 
         for item_data in items_data:
             OrderItem.objects.create(order=order, **item_data)
+            # обновление продаж для каждого товара
+            self.update_sales_product(item_data['product'], item_data['quantity'])
 
         return order
+
+    def update_sales_product(self, name, quantity):
+        old_quantity = Product.objects.filter(name=name).values('sales')
+        new_quantity = old_quantity[0]['sales'] + quantity
+        data = Product.objects.filter(name=name).update(sales = new_quantity)

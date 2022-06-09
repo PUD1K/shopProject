@@ -34,6 +34,16 @@
                             <a class="dropdown-item" @click="select = 'date_added', hidden = !hidden">
                                 Сначала старые
                             </a>
+                            <a class="dropdown-item" @click="select = '-sales', hidden = !hidden">
+                                Сначала самые продаваемые
+                            </a>
+                            <a class="dropdown-item" @click="select = 'sales', hidden = !hidden">
+                                Сначала самые непродаваемые
+                            </a>
+                            <hr class="dropdown-divider">
+                            <a class="dropdown-item" @click="select = '', select_param ='Сортировка', hidden = !hidden">
+                                Нет
+                            </a>
                             </div>
                         </div>
                     </div>
@@ -88,10 +98,10 @@
                 </div>
                 
             <!-- <AsideMenu class="is-2"/> -->
-                <ProductItem
-                    v-for="product in products"
-                    v-bind:key="product.id"
-                    v-bind:product="product"/>
+                    <ProductItem
+                        v-for="product in products"
+                        v-bind:key="product.id"
+                        v-bind:product="product"/>
             </div>
         </div>
     </div>

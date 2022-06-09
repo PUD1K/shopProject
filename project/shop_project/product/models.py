@@ -1,9 +1,10 @@
 from django.db import models
+from django.contrib.auth.models import User
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 from django.core.files import File
 from PIL import Image
 from io import BytesIO  
-
 
 class Category(models.Model):
     name = models.CharField(max_length=255)
@@ -30,9 +31,22 @@ class Manufacturer(models.Model):
     plural_name = models.CharField(max_length=255)
     slug=models.SlugField(blank=True,null=True)
 
-
     def __str__(self):
         return self.name
+
+class Comments(models.Model):
+    user = models.ForeignKey(User, related_name='user_comment', on_delete=models.CASCADE)
+
+    heading = models.CharField(max_length=100)
+    score = models.IntegerField(default = 1, validators=[MinValueValidator(1), MaxValueValidator(5)])
+    text = models.CharField(max_length=1000)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_at',]
+
+    def __str__(self):
+        return self.heading
 
 
 class Product(models.Model):
@@ -52,7 +66,10 @@ class Product(models.Model):
     image = models.ImageField(upload_to='uploads/', blank=True, null=True)
     thumbnail = models.ImageField(upload_to='uploads/', blank=True, null=True)
     date_added = models.DateField(auto_now_add=True)
+    sales = models.IntegerField(default=0)
 
+
+    comments = models.ManyToManyField(Comments, related_name='comment', blank=True)
     type = models.CharField(max_length=255)
     processor = models.CharField(max_length=255)
     videocart = models.CharField(max_length=255)
@@ -99,7 +116,6 @@ class Product(models.Model):
         thumbnail = File(thumb_io, name=image.name)
 
         return thumbnail
-
 
 
 

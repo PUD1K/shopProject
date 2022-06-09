@@ -1,27 +1,25 @@
-from django.http import Http404
-
 from rest_framework.views import APIView 
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view,  authentication_classes, permission_classes
 from rest_framework import generics
+from rest_framework.filters import SearchFilter, OrderingFilter
+from rest_framework import status, authentication, permissions
 
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework.filters import SearchFilter, OrderingFilter
 from django.db.models import Prefetch
 from django.db.models import Q
 
-from .models import Product, Category, Subcategory, Manufacturer
-from .serializers import ProductSerializer, CategorySerializer, SubcategorySerializer, BrandSerializer, AllCategorySerializer, ProductFilter
+from .models import Comments, Product, Category, Subcategory, Manufacturer
+from .serializers import CommentsSerializer, ProductSalesSerializer, ProductSerializer, CategorySerializer, SubcategorySerializer, BrandSerializer, AllCategorySerializer, ProductFilter, ProductDetailSerializer
 
 # инициализация конкретных товаров
 class ProductDetail(generics.ListAPIView):
-    serializer_class = ProductSerializer
+    serializer_class = ProductDetailSerializer
     def get_queryset(self):
         category = self.kwargs['category_slug']
         product = self.kwargs['product_slug']
         queryset =  Product.objects.filter(category__slug = category, slug = product)
         return queryset
-
 
 # инициализация всех товаров через генерики
 class ProductList(generics.ListAPIView):
@@ -99,8 +97,7 @@ class CategoryDetail(generics.ListCreateAPIView):
             except:
                 return 0
         return filters
-
-        
+ 
 # все категории
 class AllCategoires(generics.ListAPIView):
     queryset = Category.objects.all()
@@ -119,27 +116,6 @@ class BrandList(generics.ListAPIView):
     queryset = Manufacturer.objects.all()
     serializer_class = BrandSerializer
 
-# с помощью декоратора задаем поведение нашей функции
-@api_view(['POST'])
-def search(request):
-    query = request.data.get('query')
-    print(query)
-
-    if query:
-        products = Product.objects.filter(Q(name__icontains=query) | Q(description__icontains = query))
-        serializer = ProductSerializer(products, many=True)
-        return Response(serializer.data)
-    else:
-        return Response({"products": []})
-
-# class Search(CategoryDetail):
-#     serializer_class = ProductSerializer
-
-#     def get_queryset(self):
-#         # name = self.request.query_params.getlist('query')
-#         return self.get_filters(None)
-    
-
 class Search(generics.ListAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
@@ -151,7 +127,38 @@ class Search(generics.ListAPIView):
     # поля для сортировки - стоимость, дата создания
     ordering_fields = (
         'price',
-        'date_added'
+        'date_added',
+        'sales'
     )
 
+@api_view(['POST'])
+def Recommendations(request):
+    query = request.data.get('query')
+    nonQuery = request.data.get('nonQuery')
 
+    if query and nonQuery:
+        # products = Product.objects.filter(category__name=query).exclude(name=nonQuery)
+        products = Product.objects.filter(Q(type__icontains=query)).exclude(name=nonQuery)
+        serializer = ProductSerializer(products, many=True)
+        print(serializer)
+        return Response(serializer.data)
+    else:
+        return Response({"products": []})
+    
+@api_view(['POST'])
+@authentication_classes([authentication.TokenAuthentication])
+@permission_classes([permissions.IsAuthenticated])
+def add_comment(request):
+    product_id = request.data.pop('product_id')
+    comment_serializer = CommentsSerializer(data=request.data)
+    if comment_serializer.is_valid():
+        comment_serializer.save(user=request.user, product_id = product_id)
+        return Response(comment_serializer.data)
+
+class ProductSales(generics.ListAPIView):
+    queryset = Product.objects.all().values('name', 'sales').order_by('-sales')
+    serializer_class = ProductSalesSerializer
+
+class DeleteComments(generics.DestroyAPIView):
+    queryset = Comments.objects.all()
+    serializer_class = CommentsSerializer

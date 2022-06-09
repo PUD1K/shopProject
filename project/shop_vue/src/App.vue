@@ -47,7 +47,7 @@
               </template>
 
               <template v-else>
-                <router-link class="button is-light" to="/myacc">Личный кабинет</router-link>
+                <router-link class="button is-link is-light" to="/myacc">Личный кабинет</router-link>
               </template>
               
               <router-link to="/cart" class="button is-dark">
@@ -81,7 +81,7 @@ export default {
       categories: [],
       cart: {
         items: []
-      }
+      },
     }
   },
   beforeCreate(){
@@ -107,8 +107,7 @@ export default {
     }
   },
   mounted(){
-    this.username = localStorage.getItem("username")
-
+    console.log(this.$store.state.username)
     this.cart = this.$store.state.cart
     // console.log( this.$store.state.cart)
   },
