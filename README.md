@@ -14,7 +14,7 @@ Install:
     -pillow
     
 OR:
-Activate venv: \project: env/scripts/activate.ps1
+Activate venv: \project: env\scripts\activate.ps1
 
 Node.js libraries:
     -bulma
@@ -23,4 +23,4 @@ Run server:
 \project\shop_project: python manage.py runserver
 
 Run client:
-\project/shop_vue: npm run serve
+\project\shop_vue: npm run serve
