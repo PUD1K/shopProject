@@ -22,4 +22,5 @@ Node.js libraries:
 Run server:
 \project\shop_project: python manage.py runserver
 
+Run client:
 \project/shop_vue: npm run serve
