@@ -6,6 +6,7 @@ export default createStore({
       items:[]
     },
     token: '',
+    shopName: '',
     isAuthentificated: false,
     isStaff: false
   },
@@ -66,6 +67,9 @@ export default createStore({
     },
     setCart(state, cart){
       state.cart = cart
+    },
+    setShopName(state, shopName){
+      state.shopName = shopName
     }
   },
   actions: {

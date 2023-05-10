@@ -2,7 +2,7 @@ from rest_framework import serializers
 from django_filters import FilterSet
 from django_filters import NumberFilter, AllValuesMultipleFilter
 
-from .models import Category, Manufacturer, Product, Subcategory, Comments
+from .models import Category, Manufacturer, Product, Subcategory, Comments, Shop
 
 class CommentsSerializer(serializers.ModelSerializer):
     user = serializers.StringRelatedField()
@@ -155,4 +155,12 @@ class ProductSalesSerializer(serializers.ModelSerializer):
         fields=(
             'name',
             'sales'
+        )
+
+class ShopSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Shop
+        fields=(
+            'name',
+            'slug'
         )

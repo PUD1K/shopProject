@@ -7,10 +7,10 @@
       <div class="column">
         <div class="columns is-multiline">
           <div class="column is-12">
-            <h2 class="is-size-1 has-text-centered"><strong>SHOP</strong></h2>
+            <h2 class="is-size-1 has-text-centered" style="margin-left: -13rem;"><strong>{{ $store.state.shopName }}</strong></h2>
           </div>
           <div class="column is-12">
-            <h2 class="is-size-2 has-text-centered">Новинки:</h2>
+            <h2 class="is-size-2 has-text-centered" style="margin-left: -13rem;">Новинки:</h2>
           </div>
           <ProductItem
             v-for="product in NewProducts"

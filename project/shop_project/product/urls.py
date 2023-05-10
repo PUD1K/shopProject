@@ -17,4 +17,5 @@ urlpatterns = [
     path('products/<category_slug>/', views.CategoryDetail.as_view()),
     path('products/', views.Search.as_view()),
     path('get_permissions/', views.getUserPermissions),
+    path('get_shop_name/', views.GetShopName.as_view())
 ]

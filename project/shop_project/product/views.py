@@ -12,8 +12,8 @@ from django.db.models import Prefetch
 from django.db.models import Q
 from django.contrib.auth.models import Permission
 
-from .models import Comments, Product, Category, Subcategory, Manufacturer
-from .serializers import CommentsSerializer, ProductSalesSerializer, ProductSerializer, CategorySerializer, SubcategorySerializer, BrandSerializer, AllCategorySerializer, ProductFilter, ProductDetailSerializer
+from .models import Comments, Product, Category, Subcategory, Manufacturer, Shop
+from .serializers import CommentsSerializer, ProductSalesSerializer, ProductSerializer, CategorySerializer, SubcategorySerializer, BrandSerializer, AllCategorySerializer, ProductFilter, ProductDetailSerializer, ShopSerializer
 
 # инициализация конкретных товаров
 class ProductDetail(generics.ListAPIView):
@@ -183,3 +183,13 @@ def get_user_permissions(user):
     if user.is_superuser:
         return Permission.objects.all()
     return user.user_permissions.all() | Permission.objects.filter(group__user=user)
+
+
+class GetShopName(APIView):
+    def get(self, request, format=None):
+        # request.user - получаем из headers.токена
+        shop = Shop.objects.get(pk=1)
+        if(str(shop) == None or str(shop) == ''):
+            return Response({'shop_name': 'Название магазина отсутсвует'})
+        # serializer = ShopSerializer(shop)
+        return Response({'shop_name': str(shop)})

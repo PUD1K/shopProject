@@ -95,7 +95,9 @@
     <router-view/>   
   </section>
   <hr>
-  <footer class="has-text-centered">Магазин техники MyShop.</footer>
+  <template v-if="$store.state.shop_name !== 'Название магазина отсутсвует'">
+    <footer class="has-text-centered">Магазин техники {{ $store.state.shopName }}.</footer>
+  </template>
   <hr>
 </div>
 </template>
@@ -142,6 +144,7 @@ export default {
     this.cart = this.$store.state.cart
     await this.getUserEmail()
     await this.getPermissions()
+    await this.getShopName()
   },
   methods:{
     async getUserEmail(){
@@ -172,6 +175,10 @@ export default {
 
           this.$router.push('/')
       },
+    async getShopName(){
+       const { data } = await axios.get('api/get_shop_name/')
+       this.$store.commit('setShopName', data.shop_name)
+    }
 }
 }
 </script>

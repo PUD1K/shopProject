@@ -117,6 +117,9 @@ class Product(models.Model):
 
         return thumbnail
 
-
-
+class Shop(models.Model):
+    name = models.CharField(max_length=255)
+    slug = models.SlugField(default='none')
     
+    def __str__(self):
+        return self.name
