@@ -16,7 +16,7 @@
               <router-link to="/" class="navbar-item">Главная</router-link>
             </a>
 
-            <router-link to="/about" class="navbar-item">Магазины</router-link>
+            <!-- <router-link to="/about" class="navbar-item">Магазины</router-link> -->
             <div class="navbar-item">
             <form method="get" action="/search">
               <div class="field has-addons">
@@ -46,14 +46,42 @@
                 <router-link class="button is-primary" to="/login">Вход</router-link>
               </template>
 
-              <template v-else>
-                <router-link class="button is-link is-light" to="/myacc">Личный кабинет</router-link>
+              <template v-if="$store.state.isStaff">
+                <router-link class="button is-primary" to="/managment">Менеджмент</router-link>
+              </template>
+
+              <template v-if="$store.state.isAuthentificated">
+                <div class="dropdown is-active" style="margin-right: 0.5rem;">
+                  <div class="dropdown-trigger">
+                      <button class="button" aria-haspopup="true" aria-controls="dropdown-menu"  @click="hidden = !hidden">
+                      <span>{{ username }}</span>
+                      <span class="icon is-small">
+                          <i class="fas fa-angle-down" aria-hidden="true"></i>
+                      </span>
+                      </button>
+                  </div>
+                  <div class="dropdown-menu" :class="{'is-hidden': hidden}" role="menu">
+                    <div class="dropdown-content">
+                      <a class="dropdown-item" @click="$router.push('/myacc'), hidden = !hidden">
+                          Личный кабинет
+                      </a>
+                      <hr class="dropdown-divider">
+                      <a class="dropdown-item" @click="logout(), hidden = !hidden">
+                          Выход
+                      </a>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- <router-link class="button is-link is-light" to="/myacc">Личный кабинет</router-link> -->
               </template>
               
-              <router-link to="/cart" class="button is-dark">
-                <span class="icon"><i class="fas fa-shopping-cart"></i></span>
-                <span>Корзина ({{cartTotalLength}})</span>
-              </router-link>
+              <template v-if="true">
+                <router-link to="/cart" class="button is-dark">
+                  <span class="icon"><i class="fas fa-shopping-cart"></i></span>
+                  <span>Корзина ({{cartTotalLength}})</span>
+                </router-link>
+              </template>
             </div>
           </div>
 
@@ -80,8 +108,12 @@ export default {
     return {
       categories: [],
       cart: {
-        items: []
+        items: [],
+        group: ''
       },
+      username: '',
+
+      hidden: true
     }
   },
   beforeCreate(){
@@ -106,14 +138,41 @@ export default {
       return totalLength
     }
   },
-  mounted(){
-    console.log(this.$store.state.username)
+  async mounted(){
     this.cart = this.$store.state.cart
-    // console.log( this.$store.state.cart)
+    await this.getUserEmail()
+    await this.getPermissions()
   },
   methods:{
-    
-  }
+    async getUserEmail(){
+      // console.log(axios.defaults.headers.common["Authorization"])
+      await axios
+          .get('api/users/me/')
+          .then(response=>{
+              this.username = response.data.username
+          })
+          .catch(error=>{
+              console.log(error)
+          })
+      },
+    async getPermissions(){
+        const getPermissionsResponse = await axios.post('api/get_permissions/', {username: this.username});
+        const group = getPermissionsResponse.data['groups'];
+        this.$store.commit('setStaff', group);
+    },
+    logout(){
+          axios.defaults.headers.common["Authorization"] = ""
+
+          localStorage.removeItem("token")
+          localStorage.removeItem("username")
+
+          this.$store.commit("removeToken")
+          this.$store.commit("offStaff")
+          this.$store.commit("removeUsername")
+
+          this.$router.push('/')
+      },
+}
 }
 </script>
 

@@ -73,12 +73,15 @@ export default {
                     axios.defaults.headers.common["Authorization"] = "Token " + token
                     localStorage.setItem("token", token)
                     localStorage.setItem("username", formData.username)
-                    this.$router.push('/')
                 })
                 .catch(error => {
                     this.errors.push('Неверное имя пользователя или пароль.')
                     console.log(error)
                 })
+            const getPermissionsResponse = await axios.post('api/get_permissions/', {username: this.username});
+            const group = getPermissionsResponse.data['groups'];
+            this.$store.commit('setStaff', group);
+            this.$router.push('/')
         }
     }
 }

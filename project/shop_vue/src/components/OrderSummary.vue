@@ -1,7 +1,9 @@
 <template>
     <div class="box mb-4">
         <!-- номер ордера -->
-        <h3 class="is-size-4 mb-6">Заказ №{{ order.id }}</h3>
+        <div class="">
+            <h3 class="is-size-4 mb-6">Заказ №{{ order.id }}</h3>
+        </div>
 
         <table class="table is-fullwidth">
             <thead>
@@ -29,6 +31,9 @@
             </tbody>
 
         </table>
+        <div class="bottomright">
+            <h3 class="is-size-5">Статус: <strong>{{ order.status }}</strong></h3>
+        </div>
     </div>
 </template>
 

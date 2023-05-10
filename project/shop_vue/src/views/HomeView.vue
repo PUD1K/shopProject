@@ -1,24 +1,24 @@
 <template>
   <div class="home">
-    <!-- <Slidebar/> -->
-    
-    <div class="columns is-multiline">
-      <div class="column is-12">
-        <h2 class="is-size-1 has-text-centered"><strong>TIMURSHOP</strong></h2>
+    <div class="columns is-gapless">
+      <div class="column is-2" style="margin-top: 180px; margin-left: -20px; margin-right: 30px;">
+        <AsideMenu class="box is-fullheight"/>
       </div>
-      <div class="column is-12">
-        <h2 class="is-size-2 has-text-centered">Новинки:</h2>
-      </div>
-      <div class="column is-2">
-        <AsideMenu class="box"/>
-      </div>
-
-    <ProductItem
-        v-for="product in NewProducts"
-        v-bind:key="product.id"
-        v-bind:product="product" />
+      <div class="column">
+        <div class="columns is-multiline">
+          <div class="column is-12">
+            <h2 class="is-size-1 has-text-centered"><strong>SHOP</strong></h2>
+          </div>
+          <div class="column is-12">
+            <h2 class="is-size-2 has-text-centered">Новинки:</h2>
+          </div>
+          <ProductItem
+            v-for="product in NewProducts"
+            :key="product.id"
+            :product="product" />
         </div>
-
+      </div>
+    </div>
   </div>
 </template>
 

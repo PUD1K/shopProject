@@ -6,7 +6,8 @@ export default createStore({
       items:[]
     },
     token: '',
-    isAuthentificated: false
+    isAuthentificated: false,
+    isStaff: false
   },
   getters: {
   },
@@ -39,6 +40,12 @@ export default createStore({
     removeToken(state){
       state.token = ''
       state.isAuthentificated = false
+    },
+    setStaff(state){
+      state.isStaff = true;
+    },
+    offStaff(state){
+      state.isStaff = false;
     },
     addToCart(state, item){
       const exists = state.cart.items.filter(i => i.product.id === item.product.id)

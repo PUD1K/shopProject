@@ -5,9 +5,12 @@ from rest_framework import generics
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework import status, authentication, permissions
 
+from django.forms.models import model_to_dict
 from django_filters.rest_framework import DjangoFilterBackend
+from django.contrib.auth import get_user_model
 from django.db.models import Prefetch
 from django.db.models import Q
+from django.contrib.auth.models import Permission
 
 from .models import Comments, Product, Category, Subcategory, Manufacturer
 from .serializers import CommentsSerializer, ProductSalesSerializer, ProductSerializer, CategorySerializer, SubcategorySerializer, BrandSerializer, AllCategorySerializer, ProductFilter, ProductDetailSerializer
@@ -162,3 +165,21 @@ class ProductSales(generics.ListAPIView):
 class DeleteComments(generics.DestroyAPIView):
     queryset = Comments.objects.all()
     serializer_class = CommentsSerializer
+
+@api_view(['POST'])
+def getUserPermissions(request):
+    username = request.data.get('username')
+    User = get_user_model()
+    try:
+        user = User.objects.get(username=username)
+    except User.DoesNotExist:
+        return Response({"detail": "User does not exist"}, status=status.HTTP_404_NOT_FOUND)
+    groups = [model_to_dict(group) for group in user.groups.all()]
+    print(groups)
+    return Response({"groups": groups[0]['name']})
+
+
+def get_user_permissions(user):
+    if user.is_superuser:
+        return Permission.objects.all()
+    return user.user_permissions.all() | Permission.objects.filter(group__user=user)

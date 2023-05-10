@@ -9,14 +9,15 @@
   "dependencies": {
     "@splidejs/vue-splide": "^0.6.3",
     "axios": "^0.26.1",
-    "bulma": "^0.9.3",
+    "bulma": "^0.9.4",
     "bulma-carousel": "^4.0.24",
+    "chart.js": "^4.3.0",
     "core-js": "^3.8.3",
     "vue": "^3.2.13",
     "vue-agile": "^2.0.0",
     "vue-bulma-slider": "^1.0.2",
+    "vue-chartjs": "^5.2.0",
     "vue-router": "^4.0.3",
-    "vue-simple-alert": "^1.1.1",
     "vuex": "^4.0.0"
   },
   "devDependencies": {

@@ -13,6 +13,7 @@ import Cart from '../views/Cart.vue'
 import Checkout from '../views/Checkout.vue'
 import Success from '../views/Success.vue'
 import MyOrders from '../views/MyOrders.vue'
+import Managment from '../views/Managment.vue'
 
 
 const routes = [
@@ -85,6 +86,14 @@ const routes = [
     path: '/myacc/myorders',
     name: 'MyOrders',
     component: MyOrders,
+    meta: {
+      requireLogin: true
+    }
+  },
+  {
+    path: '/managment',
+    name: 'Managment',
+    component: Managment,
     meta: {
       requireLogin: true
     }

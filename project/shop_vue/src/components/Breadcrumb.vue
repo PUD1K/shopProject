@@ -1,17 +1,17 @@
 <template>
   <div>
-            <nav class="breadcrumb has-arrow-separator">
-                <ul class="container">
-                    <li><router-link to='/' class="has-text-dark">Каталог</router-link></li>
-                    <li v-if="query"><a  class="has-text-grey">{{query}}</a></li>
- 
-                    <li v-if="product_name"><router-link :to='category_url' class="has-text-dark">{{category_name}}</router-link></li> 
-                    <li v-else-if="category_name"><a class="has-text-grey">{{category_name}}</a></li> 
+        <nav class="breadcrumb has-arrow-separator">
+            <ul class="container" style="max-width: 1700px;">
+                <li><router-link to='/' class="has-text-dark">Каталог</router-link></li>
+                <li v-if="query"><a  class="has-text-grey">{{query}}</a></li>
 
-                    <li v-if="product_name"><a class="has-text-grey">{{product_name}}</a></li> 
-                </ul>
-            </nav>
-        </div>
+                <li v-if="product_name"><router-link :to='category_url' class="has-text-dark">{{category_name}}</router-link></li> 
+                <li v-else-if="category_name"><a class="has-text-grey">{{category_name}}</a></li> 
+
+                <li v-if="product_name"><a class="has-text-grey">{{product_name}}</a></li> 
+            </ul>
+        </nav>
+    </div>
 </template>
 
 <script>

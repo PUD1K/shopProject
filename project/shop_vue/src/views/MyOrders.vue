@@ -1,11 +1,11 @@
 <template>
    <div class="column is-12">
-        <h2 class="subtitile">Мои заказы</h2>
-
-        <OrderSummary
-            v-for="order in orders" 
-            v-bind:key ="order.id"
-            v-bind:order="order" />
+        <div class="mt-4">
+            <OrderSummary
+                v-for="order in orders" 
+                v-bind:key ="order.id"
+                v-bind:order="order" />
+        </div>
     </div>
 </template>
 

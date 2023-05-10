@@ -1,107 +1,108 @@
 <template>
     <div class="page-search">
         <div class="columns is-multiline">
-        <Breadcrumb :query="query"/>
+            <Breadcrumb :query="query"/>
 
-            <div class="column is-12">
-                <h1 class="is-size-4"><strong>Поиск</strong></h1>
-                <h2 class="is size-5">Найдено: {{products.length}}</h2>
-            </div>
-
-        <!-- Начало сортировки -->
-            <div class="columns is-multiline">
-                <div class="column is-3">
-                    <div class="dropdown is-active">
-                        <div class="dropdown-trigger">
-                            <button class="button" aria-haspopup="true" aria-controls="dropdown-menu"  @click="hidden = !hidden">
-                            <span>Сортировка</span>
-                            <span class="icon is-small">
-                                <i class="fas fa-angle-down" aria-hidden="true"></i>
-                            </span>
-                            </button>
-                        </div>
-                        <div class="dropdown-menu" :class="{'is-hidden': hidden}" aria-hidden="true" role="menu">
-                            <div class="dropdown-content">
-                            <a class="dropdown-item" @click="select = '-price', hidden = !hidden">
-                                Сначала дорогие
-                            </a>
-                            <a class="dropdown-item" @click="select = 'price', hidden = !hidden">
-                                Сначала недорогие
-                            </a>
-                            <a class="dropdown-item" @click="select = '-date_added', hidden = !hidden">
-                                Сначала новые
-                            </a>
-                            <a class="dropdown-item" @click="select = 'date_added', hidden = !hidden">
-                                Сначала старые
-                            </a>
-                            <a class="dropdown-item" @click="select = '-sales', hidden = !hidden">
-                                Сначала самые продаваемые
-                            </a>
-                            <a class="dropdown-item" @click="select = 'sales', hidden = !hidden">
-                                Сначала самые непродаваемые
-                            </a>
-                            <hr class="dropdown-divider">
-                            <a class="dropdown-item" @click="select = '', select_param ='Сортировка', hidden = !hidden">
-                                Нет
-                            </a>
-                            </div>
-                        </div>
-                    </div>
-        <!-- Конец сортировки -->
-                    <hr>
-                    <div class="column is-8 box">
-                        <strong>Категория</strong>
-                        <div
-                            v-for="cat in categories"
-                            v-bind:key="cat"
-                        >
-                            <label class="checkbox ml-1">
-                                <input type="checkbox" :value="cat" v-model="filterCategories">
-                                {{cat}}
-                            </label>
-                        </div>
-                    </div>  
-                    <div class="column is-8 box">
-                        <strong>Тип</strong>
-                        <div
-                            v-for="sub in subcategories"
-                            v-bind:key="sub"
-                        >
-                            <label class="checkbox ml-1">
-                                <input type="checkbox" :value="sub" v-model="filterSubcategories">
-                                {{sub}}
-                            </label>
-                        </div>
-                    </div>                 
-
-                    <div class="column is-8 box">
-                        <strong>Производитель</strong>
-                        <div
-                            v-for="manuf in manufacturers"
-                            v-bind:key="manuf"
-                        >
-                            <label class="checkbox ml-1">
-                                <input type="checkbox" :value="manuf" v-model="filterManufacturer">
-                                {{manuf}}
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="column is-6">
-                        <h1 class="">Цена:</h1>
-                        <input v-model="price_filter_1" class="input mt-2 ml-1" type="text" placeholder="От" name="price">
-                        <input v-model="price_filter_2" class="input mt-2 ml-1" type="text" placeholder="До" name="price">
-
-                        <button type="button" @click="getFilter" class="button is-light mt-5">Применить</button>
-                    </div>
-                    <hr>
+                <div class="column is-12">
+                    <h1 class="is-size-4"><strong>Поиск</strong></h1>
+                    <h2 class="is size-5">Найдено: {{products.length}}</h2>
                 </div>
-                
+
+            <!-- Начало сортировки -->
+                <div class="columns is-multiline">
+                    <template v-if="products.length">
+                        <div class="column is-3">
+                            <div class="dropdown is-active">
+                                <div class="dropdown-trigger">
+                                    <button class="button" aria-haspopup="true" aria-controls="dropdown-menu"  @click="hidden = !hidden">
+                                    <span>Сортировка</span>
+                                    <span class="icon is-small">
+                                        <i class="fas fa-angle-down" aria-hidden="true"></i>
+                                    </span>
+                                    </button>
+                                </div>
+                                <div class="dropdown-menu" :class="{'is-hidden': hidden}" aria-hidden="true" role="menu">
+                                    <div class="dropdown-content">
+                                    <a class="dropdown-item" @click="select = '-price', hidden = !hidden">
+                                        Сначала дорогие
+                                    </a>
+                                    <a class="dropdown-item" @click="select = 'price', hidden = !hidden">
+                                        Сначала недорогие
+                                    </a>
+                                    <a class="dropdown-item" @click="select = '-date_added', hidden = !hidden">
+                                        Сначала новые
+                                    </a>
+                                    <a class="dropdown-item" @click="select = 'date_added', hidden = !hidden">
+                                        Сначала старые
+                                    </a>
+                                    <a class="dropdown-item" @click="select = '-sales', hidden = !hidden">
+                                        Сначала самые продаваемые
+                                    </a>
+                                    <a class="dropdown-item" @click="select = 'sales', hidden = !hidden">
+                                        Сначала самые непродаваемые
+                                    </a>
+                                    <hr class="dropdown-divider">
+                                    <a class="dropdown-item" @click="select = '', select_param ='Сортировка', hidden = !hidden">
+                                        Нет
+                                    </a>
+                                    </div>
+                                </div>
+                            </div>
+                <!-- Конец сортировки -->
+                            <hr>
+                            <div class="column is-8 box">
+                                <strong>Категория</strong>
+                                <div
+                                    v-for="cat in categories"
+                                    v-bind:key="cat"
+                                >
+                                    <label class="checkbox ml-1">
+                                        <input type="checkbox" :value="cat" v-model="filterCategories">
+                                        {{cat}}
+                                    </label>
+                                </div>
+                            </div>  
+                            <div class="column is-8 box">
+                                <strong>Тип</strong>
+                                <div
+                                    v-for="sub in subcategories"
+                                    v-bind:key="sub"
+                                >
+                                    <label class="checkbox ml-1">
+                                        <input type="checkbox" :value="sub" v-model="filterSubcategories">
+                                        {{sub}}
+                                    </label>
+                                </div>
+                            </div>                 
+
+                            <div class="column is-8 box">
+                                <strong>Производитель</strong>
+                                <div
+                                    v-for="manuf in manufacturers"
+                                    v-bind:key="manuf"
+                                >
+                                    <label class="checkbox ml-1">
+                                        <input type="checkbox" :value="manuf" v-model="filterManufacturer">
+                                        {{manuf}}
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="column is-6">
+                                <h1 class="">Цена:</h1>
+                                <input v-model="price_filter_1" class="input mt-2 ml-1" type="text" placeholder="От" name="price">
+                                <input v-model="price_filter_2" class="input mt-2 ml-1" type="text" placeholder="До" name="price">
+
+                                <button type="button" @click="getFilter" class="button is-light mt-5">Применить</button>
+                            </div>
+                            <hr>
+                        </div>
+                    </template>
             <!-- <AsideMenu class="is-2"/> -->
-                    <ProductItem
-                        v-for="product in products"
-                        v-bind:key="product.id"
-                        v-bind:product="product"/>
+                <ProductItem
+                    v-for="product in products"
+                    v-bind:key="product.id"
+                    v-bind:product="product"/>
             </div>
         </div>
     </div>

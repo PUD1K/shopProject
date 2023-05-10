@@ -33,7 +33,8 @@ class MyOrderSerializer(serializers.ModelSerializer):
             "phone",
             "created_at",
             "paid_amount",
-            'items'
+            'items',
+            'status'
         )
 
 
@@ -62,7 +63,8 @@ class OrderSerializer(serializers.ModelSerializer):
             "address",
             "phone",
             "created_at",
-            'items'
+            'items',
+            'status'
         )
     
     def create(self, validated_data):
