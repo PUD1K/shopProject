@@ -1,7 +1,14 @@
 <template>
     <tr>
-        <td><router-link :to="item.product.get_absolute_url">{{item.product.name}}</router-link></td>
-        <td>{{item.product.price}} ₽</td>
+        <td>
+            <figure>
+                <img style="height: 200px; width: 230px" v-bind:src="item.product ? item.product.get_image : ''">
+            </figure>
+            <router-link :to="item.product.get_absolute_url">
+                {{item.product.name}}
+            </router-link></td>
+        <td>{{item.product.price}} ₽
+        </td>
         <td>
             {{item.quantity}}
             <a @click="decrementQuantity(item)">-</a>

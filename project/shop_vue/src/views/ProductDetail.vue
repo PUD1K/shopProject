@@ -213,7 +213,7 @@ export default {
                 product: this.product, 
                 quantity: this.quantity
             }
-
+            console.log(item)
             this.$store.commit('addToCart', item)
         },
         getRecommendations(){

@@ -160,8 +160,10 @@ export default {
       },
     async getPermissions(){
         const getPermissionsResponse = await axios.post('api/get_permissions/', {username: this.username});
+        console.log(getPermissionsResponse.data['groups']);
         const group = getPermissionsResponse.data['groups'];
-        this.$store.commit('setStaff', group);
+        if(group === 'Staff')
+          this.$store.commit('setStaff', group);
     },
     logout(){
           axios.defaults.headers.common["Authorization"] = ""

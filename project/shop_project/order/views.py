@@ -65,6 +65,9 @@ class AllOrderList(APIView):
             for item in order['items']:
                 product = item['product']
                 statsSalesPerMonth[month] += item['quantity']
+                print(item)
+                print(int(item['price'][:-3]))
+                print(item['quantity'])
                 statsTotalSumPerMonth[month] += (int(item['price'][:-3]) * item['quantity'])/1000
                 statsSalesPerCategory[product['category']] += item['quantity']
         

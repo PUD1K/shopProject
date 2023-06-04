@@ -21,7 +21,12 @@
                             v-for="item in cart.items"
                             v-bind:key="item.product.id"
                         >
-                            <td>{{item.product.name}}</td>
+                            <td>
+                                <figure>
+                                    <img style="height: 200px; width: 230px" v-bind:src="item.product ? item.product.get_image : ''">
+                                </figure>
+                                {{item.product.name}}
+                            </td>
                             <td>{{item.product.price}} ₽</td>
                             <td>{{item.quantity}}</td>
                             <td>{{getItemTotal(item).toFixed(2)}} ₽</td>

@@ -176,7 +176,7 @@ def getUserPermissions(request):
         return Response({"detail": "User does not exist"}, status=status.HTTP_404_NOT_FOUND)
     groups = [model_to_dict(group) for group in user.groups.all()]
     print(groups)
-    return Response({"groups": groups[0]['name']})
+    return Response({"groups": groups[0]['name']}) if len(groups) > 0 else Response({})
 
 
 def get_user_permissions(user):
