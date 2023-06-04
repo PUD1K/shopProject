@@ -112,10 +112,10 @@ export default {
       async getStats(){
         const { data } = await axios.get('api/all_orders')
 
-        this.lineSalesData.labels = Object.keys(data.statsSalesPerMonth)
-        this.lineSalesData.data = Object.values(data.statsSalesPerMonth)
-        this.lineTotalSumData.labels = Object.keys(data.statsPricePerMonth)
-        this.lineTotalSumData.data = Object.values(data.statsPricePerMonth)
+        this.lineSalesData.labels = Object.keys(data.statsSalesPerMonth).reverse()
+        this.lineSalesData.data = Object.values(data.statsSalesPerMonth).reverse()
+        this.lineTotalSumData.labels = Object.keys(data.statsPricePerMonth).reverse()
+        this.lineTotalSumData.data = Object.values(data.statsPricePerMonth).reverse()
 
         this.doughnutData.labels = Object.keys(data.statsSalesPerCategory)
         this.doughnutData.data = Object.values(data.statsSalesPerCategory)
