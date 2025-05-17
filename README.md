@@ -16,9 +16,6 @@ Install:
 OR:
 Activate venv: \project: env\scripts\activate.ps1
 
-Node.js libraries:
-    -bulma
-
 Run server:
 \project\shop_project: python manage.py runserver
 
